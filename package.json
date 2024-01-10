@@ -1,0 +1,19 @@
+{
+  "name": "threejs-3d-shirt-react",
+  "version": "1.0.0",
+  "description": "This is a React project that allows users to upload an image as either the hero or background image on a shirt.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theElephants/React_3D_Shirt_Maker.git"
+  },
+  "author": "Eric Kershner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theElephants/React_3D_Shirt_Maker/issues"
+  },
+  "homepage": "https://github.com/theElephants/React_3D_Shirt_Maker#readme"
+}

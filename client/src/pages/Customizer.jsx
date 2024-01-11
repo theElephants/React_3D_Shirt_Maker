@@ -14,6 +14,7 @@ import { AIPicker, ColorPicker, CustomButton, FilePicker, Tab } from '../compone
 const Customizer = () => {
     const snap = useSnapshot(state)
     const [file, setFile] = useState('')
+    const [canvasReady, setCanvasReady] = useState(true);
 
     const [prompt, setPrompt] = useState('')
     const [generatingImg, setGeneratingImg] = useState(false)
@@ -47,30 +48,32 @@ const Customizer = () => {
     }
 
     const handleSubmit = async (type) => {
-        if(!prompt) return alert("Please enter a prompt")
-        try{
-            setGeneratingImg(true)
-
+        if (!prompt) return alert("Please enter a prompt");
+        try {
+            setGeneratingImg(true);
+    
             const response = await fetch('http://localhost:8080/api/v1/dalle', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          prompt,
-        })
-      })
-
-      const data = await response.json();
-
-      handleDecals(type, `data:image/png;base64,${data.photo}`)
-        }catch (error) {
-            alert(error)
-    } finally {
-        setGeneratingImg(false)
-        setActiveEditorTab("")
-    }
-}
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    prompt,
+                })
+            });
+    
+            const data = await response.json();
+    
+            handleDecals(type, `data:image/png;base64,${data.photo}`);
+            setCanvasReady(true); // Set canvasReady to true when image is generated
+        } catch (error) {
+            alert(error);
+        } finally {
+            setGeneratingImg(false);
+            setActiveEditorTab("");
+        }
+    };
+    
 
     const handleDecals = (type, result) => {
         const decalType = DecalTypes[type]
@@ -146,6 +149,19 @@ const Customizer = () => {
                         customStyles="w-fit px-4 py-2.5 font-bold text-sm"
                     />
                 </motion.div>
+                <motion.div
+                    className="absolute z-10 top-20 right-7"
+                    {...fadeAnimation}
+                >
+                    <button
+                        className="w-[4rem] absolute z-10 top-6 right-0 rounded-md w-2/3 h-2/3 transparent"
+                        onClick={downloadCanvasToImage}
+                    >
+                        <img className="w-[4rem]" src={download} />
+                    </button>
+
+                </motion.div>
+
                 <motion.div
                     className="filtertabs-container"
                     {...slideAnimation('up')}
